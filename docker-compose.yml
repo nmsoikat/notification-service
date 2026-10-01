@@ -4,7 +4,10 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     container_name: nestjs_api
     ports:
       - "${PORT}:${PORT}"
@@ -31,7 +34,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_DB_USER -d $$POSTGRES_DB_NAME"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -41,10 +44,9 @@ services:
     image: rabbitmq:3-management-alpine
     container_name: rabbitmq_broker
     ports:
-      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"   # RabbitMQ default port
-      - "${RABBITMQ_UI_PORT}:${RABBITMQ_UI_PORT}" # Management UI dashboard port
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+      - "${RABBITMQ_UI_PORT}:${RABBITMQ_UI_PORT}"
     environment:
-      # SETTING THE PASSWORD HERE: Replaces default guest/guest
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     volumes:
