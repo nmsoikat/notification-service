@@ -17,8 +17,8 @@ import { Channel, Options } from 'amqplib';
 export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
     private readonly logger = new Logger(RabbitMQService.name);
 
-    private connection: AmqpConnectionManager;
-    private channel: ChannelWrapper;
+    private connection: AmqpConnectionManager | null = null;
+    private channel: ChannelWrapper | null = null;
 
     private readonly exchangeName = 'notification.exchange';
     private readonly exchangeType = 'topic';
@@ -85,7 +85,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
             contentEncoding: 'utf-8',
         };
 
-        await this.channel.publish(
+        await this.channel?.publish(
             this.exchangeName,
             routingKey,
             message,

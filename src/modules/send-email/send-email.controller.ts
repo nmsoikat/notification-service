@@ -24,7 +24,7 @@ export class SendEmailController {
     @Payload() data: unknown,
     @Ctx() context: RmqContext,
   ) {
-    console.log("👍 ~ data:", data)
+
     try {
       // process
       await this.emailService.send(data);

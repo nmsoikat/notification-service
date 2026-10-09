@@ -4,7 +4,7 @@
 1. Connect with rabbitmq:
 - Way 1: Import - Register
 ```
-// rabbitmq.module.ts
+// rabbitmq.module.ts (recommended)
 @Module({
   imports: [
     ClientsModule.register([
@@ -29,7 +29,7 @@ export class RabbitMQModule {}
 
 - Way 2: Providers - ClientProxy
 ```
-// rabbitmq.module.ts
+// rabbitmq.module.ts (when modification needed)
 @Module({
   providers: [
     {
